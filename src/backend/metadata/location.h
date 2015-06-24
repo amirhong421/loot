@@ -34,15 +34,15 @@ namespace loot {
     public:
         Location();
         Location(const std::string& url);
-        Location(const std::string& url, const std::vector<std::string>& versions);
+        Location(const std::string& url, const std::string& name);
 
         bool operator < (const Location& rhs) const;
 
         std::string URL() const;
-        std::vector<std::string> Versions() const;
+        std::string Name() const;
     private:
         std::string _url;
-        std::vector<std::string> _versions;
+        std::string _name;
     };
 }
 
@@ -53,28 +53,28 @@ namespace YAML {
             Node node;
 
             node["link"] = rhs.URL();
-            node["ver"] = rhs.Versions();
+            node["name"] = rhs.Name();
 
             return node;
         }
 
         static bool decode(const Node& node, loot::Location& rhs) {
             std::string url;
-            std::vector<std::string> versions;
+            std::string name;
 
             if (node.IsMap()) {
-                if (!node["link"] || !node["ver"])
+                if (!node["link"])
                     return false;
 
                 if (node["link"])
                     url = node["link"].as<std::string>();
-                if (node["ver"])
-                    versions = node["ver"].as<std::vector<std::string>>();
+                if (node["name"])
+                    name = node["name"].as<std::string>();
             }
             else if (node.IsScalar())
                 url = node.as<std::string>();
 
-            rhs = loot::Location(url, versions);
+            rhs = loot::Location(url, name);
 
             return true;
         }
