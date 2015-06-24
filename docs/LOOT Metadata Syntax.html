@@ -591,11 +591,12 @@ msg:
 
 <table>
     <head>
-        <tr><th>Feature Supported?<th>v0.5<th>v0.6<th>v0.7
+        <tr><th>Feature Supported?<th>v0.5<th>v0.6<th>v0.7<th>v0.8
     <tbody>
         <tr><td>GitHub Flavored Markdown message formatting<td colspan="2">Only URL hyperlinking is supported, for <code>file:</code>, <code>http:</code> and <code>https:</code> URLs, using the <code>[label](url)</code> and <code>&lt;url&gt;</code> syntaxes.<td>LOOT uses the <a href="https://github.com/chjj/marked">Marked</a> library (v0.3) to provide support for most of GitHub Flavored Markdown, minus the GitHub-specific features (like @mentions, issue/repo linking and emoji).
         <tr><td>Message string substitution (ie. <code>sub:</code>)<td colspan="2">No<td>Yes
         <tr><td>YAML merge keys (ie. <code>&lt;&lt;:</code>)<td colspan="2">No<td>Yes
+        <tr><td><code>many("<var>regex</var>")</code> condition function<td colspan="3">No<td>Yes
 </table>
 
 <h2 id="license">License</h2>
