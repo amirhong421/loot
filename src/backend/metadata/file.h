@@ -53,9 +53,14 @@ namespace YAML {
     struct convert < loot::File > {
         static Node encode(const loot::File& rhs) {
             Node node;
-            node["condition"] = rhs.Condition();
             node["name"] = rhs.Name();
-            node["display"] = rhs.DisplayName();
+
+            if (!rhs.Condition().empty())
+                node["condition"] = rhs.Condition();
+
+            if (rhs.DisplayName() != rhs.Name())
+                node["display"] = rhs.DisplayName();
+
             return node;
         }
 
@@ -64,11 +69,10 @@ namespace YAML {
                 if (!node["name"])
                     return false;
 
-                std::string condition, name, display;
+                std::string name = node["name"].as<std::string>();
+                std::string condition, display;
                 if (node["condition"])
                     condition = node["condition"].as<std::string>();
-                if (node["name"])
-                    name = node["name"].as<std::string>();
                 if (node["display"])
                     display = node["display"].as<std::string>();
                 rhs = loot::File(name, display, condition);
