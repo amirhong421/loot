@@ -57,16 +57,16 @@ namespace YAML {
     Emitter& operator << (Emitter& out, const loot::Tag& rhs) {
         if (!rhs.IsConditional()) {
             if (rhs.IsAddition())
-                out << rhs.Name();
+                out << YAML::SingleQuoted << rhs.Name();
             else
-                out << ('-' + rhs.Name());
+                out << YAML::SingleQuoted << ('-' + rhs.Name());
         }
         else {
             out << BeginMap;
             if (rhs.IsAddition())
-                out << Key << "name" << Value << rhs.Name();
+                out << Key << "name" << Value << YAML::SingleQuoted << rhs.Name();
             else
-                out << Key << "name" << Value << ('-' + rhs.Name());
+                out << Key << "name" << Value << YAML::SingleQuoted << ('-' + rhs.Name());
 
             out << Key << "condition" << Value << YAML::SingleQuoted << rhs.Condition()
                 << EndMap;
