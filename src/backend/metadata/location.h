@@ -53,7 +53,8 @@ namespace YAML {
             Node node;
 
             node["link"] = rhs.URL();
-            node["ver"] = rhs.Versions();
+            if (!rhs.Versions().empty())
+                node["ver"] = rhs.Versions();
 
             return node;
         }
@@ -66,10 +67,8 @@ namespace YAML {
                 if (!node["link"] || !node["ver"])
                     return false;
 
-                if (node["link"])
-                    url = node["link"].as<std::string>();
-                if (node["ver"])
-                    versions = node["ver"].as<std::vector<std::string>>();
+                url = node["link"].as<std::string>();
+                versions = node["ver"].as<std::vector<std::string>>();
             }
             else if (node.IsScalar())
                 url = node.as<std::string>();
