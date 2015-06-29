@@ -55,13 +55,22 @@ TEST(set, YamlEmitter) {
     EXPECT_STREQ("- a\n- b\n- c", e1.c_str());
 }
 
+bool nodeContains(const std::string& value, const YAML::Node& node) {
+    for (const auto& element : node) {
+        if (element.as<std::string>() == value)
+            return true;
+    }
+    return false;
+}
+
 TEST(unordered_set, YamlEncode) {
     YAML::Node node;
     std::unordered_set<std::string> stringSet({"a", "b", "c"});
     node = stringSet;
-    EXPECT_EQ("a", node[0].as<std::string>());
-    EXPECT_EQ("b", node[1].as<std::string>());
-    EXPECT_EQ("c", node[2].as<std::string>());
+    // Check that the values are all present in the node.
+    EXPECT_PRED2(nodeContains, "a", node);
+    EXPECT_PRED2(nodeContains, "b", node);
+    EXPECT_PRED2(nodeContains, "c", node);
 }
 
 TEST(unordered_set, YAMLDecode) {
@@ -75,11 +84,30 @@ TEST(unordered_set, YAMLDecode) {
     EXPECT_EQ(1, stringSet.count("c"));
 }
 
+bool sequenceOf(const char val1,
+                const char val2,
+                const char val3,
+                const std::string& seq) {
+    if (seq.substr(0, 2) != "- "
+        || seq.substr(3, 3) != "\n- "
+        || seq.substr(7, 3) != "\n- ")
+        return false;
+
+    std::list<char> values({val1, val2, val3});
+    std::list<char> found({seq[2], seq[6], seq[10]});
+
+    values.sort();
+    found.sort();
+
+    return values == found;
+}
+
 TEST(unordered_set, YamlEmitter) {
     std::unordered_set<std::string> stringSet({"a", "b", "c"});
     YAML::Emitter e1;
     e1 << stringSet;
-    EXPECT_STREQ("- a\n- b\n- c", e1.c_str());
+    ASSERT_EQ(11, e1.size());
+    EXPECT_PRED4(sequenceOf, 'a', 'b', 'c', e1.c_str());
 }
 
 #endif
