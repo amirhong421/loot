@@ -85,9 +85,9 @@ TEST_F(GameSettings, IsInstalled) {
     EXPECT_FALSE(game.IsInstalled());
 
     game = loot::GameSettings(loot::GameSettings::tes5);
-    ASSERT_EQ("", game.GamePath());
+    game.SetGamePath(dataPath.parent_path());
     EXPECT_TRUE(game.IsInstalled());
-    EXPECT_NE("", game.GamePath());
+    EXPECT_EQ(dataPath.parent_path(), game.GamePath());
 
     game = loot::GameSettings(loot::GameSettings::fo3);
     EXPECT_FALSE(game.IsInstalled());
