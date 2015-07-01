@@ -44,7 +44,6 @@ TEST(GitHelper, ConstructorAndDestructor) {
     EXPECT_EQ(2, git_libgit2_init());
     delete git;
     EXPECT_EQ(0, git_libgit2_shutdown());
-    git_libgit2_shutdown();
 }
 
 TEST(GitHelper, Call) {
