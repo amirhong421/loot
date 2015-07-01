@@ -25,10 +25,11 @@ along with LOOT.  If not, see
 #ifndef LOOT_TEST_BACKEND_GAME
 #define LOOT_TEST_BACKEND_GAME
 
+#include "tests/fixtures.h"
+
 #include "backend/error.h"
 #include "backend/globals.h"
 #include "backend/game/game.h"
-#include "tests/fixtures.h"
 
 class Game : public SkyrimTest {};
 
