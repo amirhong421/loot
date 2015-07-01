@@ -25,6 +25,7 @@ along with LOOT.  If not, see
 #ifndef LOOT_TEST_FIXTURES
 #define LOOT_TEST_FIXTURES
 
+#include "backend/globals.h"
 #include "backend/helpers/streams.h"
 
 #include <gtest/gtest.h>
@@ -49,6 +50,10 @@ protected:
         ASSERT_FALSE(boost::filesystem::exists(userlistPath));
         ASSERT_FALSE(boost::filesystem::exists(localPath / ".git"));
         ASSERT_FALSE(boost::filesystem::exists(missingPath));
+#ifndef _WIN32
+        // Windows may contain an actual LOOT install.
+        ASSERT_FALSE(boost::filesystem::exists(loot::g_path_local));
+#endif
 
         ASSERT_TRUE(boost::filesystem::exists(dataPath / "Blank.esm"));
         ASSERT_TRUE(boost::filesystem::exists(dataPath / "Blank - Different.esm"));
@@ -99,6 +104,12 @@ protected:
 
         // Also remove the ".git" folder if it has been created.
         ASSERT_NO_THROW(boost::filesystem::remove_all(localPath / ".git"));
+
+#ifndef _WIN32
+        // Also delete the fake LOOT local data folder.
+        ASSERT_NO_THROW(boost::filesystem::remove(loot::g_path_local));
+        ASSERT_FALSE(boost::filesystem::exists(loot::g_path_local));
+#endif
 
         ASSERT_NO_THROW(loot_destroy_db(db));
     }
